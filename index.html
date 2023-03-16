@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang = "EN">
+  <head> 
+    <title> Pong </title>
+    <style>
+      body {font-family: monospace; background-color: black; color: green; text-align: center;}
+      h1 {border: 2px green solid; padding: 5px; margin: 5px;}
+      p {}
+      #secret {display: none;}
+      /* PSUEDO CLASSES */
+      button {font-weight: bold; color: black; background-color: white; border: 2px black solid; padding: 5px; margin: 5px;}
+      button:hover {padding: 10px; color: white; background-color: black; border-color: white;}
+      button:active {padding: 15px;}
+    </style>
+  </head>
+    
+    <body>
+       <h1> Lonely Man's Pong </h1>
+       
+    <p> This is a one person game of Pong. You can use the up and down arrow to manuever the paddle. </p>
+    <button onclick = refresh()>Play Again</button>
+    <p> * Reach the ultimate # for a secret message!</p>
+    <p id="secret">Wow! You reached 69! Nice. You are a true gamer and can now use any gamer words without guilt. - David R-H</p>
+    <p id="counter">HIT COUNTER: 0</p>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"> // library for game UI
+    </script> 
+<script>
+let counter = 0; // counts the amount of times ball hits paddle
+let rad = 15; //the radius of the ball
+let dirx = 2; //x direction
+let diry = 1; //y direction
+let spdx = 3; //x speed
+let spdy = 3; //y speed
+let pdx = 350; //paddle x position
+let pdy = 200; //paddle y position
+let bx = 200; //the x location of the ball
+let by = 200; //the y location of the ball
+let bgc = 220; //the background color
+
+function setup() {
+  createCanvas(410, 410);
+  this.focus() //so that you don't have to click on the canvas - Note 1
+  background(bgc);
+}
+
+function draw() {
+  moveball();
+  movepad();
+  console.log(bx, by, pdx, pdy); //to see the x,y numbers for debugging
+}
+
+function movepad() { // speed for moving paddle
+  rect(pdx, pdy, 10, 40); //draws a rectangle paddle with upper left corner at (pdx, pdy)
+  if (keyIsDown(UP_ARROW) && (pdy >= 0)) { //see Note 2
+    pdy = pdy - 10;
+  }
+  if (keyIsDown(DOWN_ARROW) && (pdy <= 360)) {
+    pdy = pdy + 10;
+  }
+  if (keyIsDown(ENTER)) { //to stop game for debugging
+    noLoop();
+  }
+}
+
+function moveball() {
+  clear();
+  background(bgc);
+  circle(bx, by, rad);
+  if ((bx >= 400) || (bx <= 0)) { //check wall x
+    dirx = -1 * dirx;
+  }
+  if ((by >= 400) || (by <= 0)) { //check wall y
+    diry = -1 * diry;
+  }
+  if ((bx >= pdx - 10 || bx == pdx) && (by >= pdy) && (by <= pdy + 40)) { //check paddle
+    dirx = -1 * dirx;
+  }
+
+  if ((bx >= pdx - 10) && (bx <= pdx) && (by >= pdy) && (by <= pdy + 40)) { // checks if ball front collision
+    //keeps track of counter
+    counter = counter + 1;
+    document.getElementById("counter").innerHTML = "HIT COUNTER: " + counter;
+    if(counter >= 10 ) {
+      document.getElementById("counter").style.color = "orange";
+      document.getElementById("counter").style.fontSize = "16px";
+    }
+    if(counter >= 20) {
+    document.getElementById("counter").style.color = "red";
+    document.getElementById("counter").style.fontSize = "20px";
+    }  
+    if(counter >= 30) {
+    document.getElementById("counter").style.color = "pink";
+    document.getElementById("counter").style.fontSize = "24px";
+    }  
+    if(counter >= 40) {
+    document.getElementById("counter").style.color = "blue";
+    document.getElementById("counter").style.fontSize = "28px";
+    }  
+    if(counter >= 50) {
+    document.getElementById("counter").style.color = "purple";
+    document.getElementById("counter").style.fontSize = "32px";
+    }  
+    if(counter >= 69) {
+    document.getElementById("secret").style.display = "block";
+    }  
+  }
+  bx = bx + (dirx * spdx);
+  by = by + (diry * spdy);
+}
+// method to reload page
+function refresh() {
+  location.reload()
+}
+</script>
+  </body>
+  
+</html>
